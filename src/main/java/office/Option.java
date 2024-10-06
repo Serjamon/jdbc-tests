@@ -4,19 +4,22 @@ import java.sql.*;
 import java.util.Scanner;
 
 public enum Option {
+
     AddEmployee {
         String getText() {
             return this.ordinal() + ".Добавить сотрудника";
         }
 
-        void action() {
+        void action() throws SQLException {
             System.out.println("Введите его id:");
             int id=sc.nextInt();
             System.out.println("Введите его имя:");
             String name=sc.next();
             System.out.println("Введите id отдела:");
             int depid=sc.nextInt();
-            Service.addEmployee(new Employee(id,name,depid));
+            Connection con = dbCon.getConnection();
+            Service.addEmployee(new Employee(id,name,depid), con);
+            con.close();
         }
     },
     DeleteEmployee {
@@ -24,10 +27,12 @@ public enum Option {
             return this.ordinal() + ".Удалить сотрудника";
         }
 
-        void action() {
+        void action() throws SQLException {
             System.out.println("Введите его id:");
             int id=sc.nextInt();
-            Service.removeEmployee(new Employee(id,"",0));
+            Connection con = dbCon.getConnection();
+            Service.removeEmployee(new Employee(id,"",0), con);
+            con.close();
         }
     },
     AddDepartment {
@@ -35,12 +40,14 @@ public enum Option {
             return this.ordinal() + ".Добавить отдел";
         }
 
-        void action() {
+        void action() throws SQLException {
             System.out.println("Введите его id:");
             int id=sc.nextInt();
             System.out.println("Введите его название:");
             String name=sc.next();
-            Service.addDepartment(new Department(id,name));
+            Connection con = dbCon.getConnection();
+            Service.addDepartment(new Department(id,name), con);
+            con.close();
         }
     },
     DeleteDepartment {
@@ -48,10 +55,12 @@ public enum Option {
             return this.ordinal() + ".Удалить отдел";
         }
 
-        void action() {
+        void action() throws SQLException {
             System.out.println("Введите его id:");
             int id=sc.nextInt();
-            Service.removeDepartment(new Department(id,""));
+            Connection con = dbCon.getConnection();
+            Service.removeDepartment(new Department(id,""), con);
+            con.close();
         }
     },
     CLEAR_DB {
@@ -59,8 +68,10 @@ public enum Option {
             return this.ordinal() + ".Сбросить базу данных";
         }
 
-        void action() {
-            Service.createDB();
+        void action() throws SQLException {
+            Connection con = dbCon.getConnection();
+            Service.createDB(con);
+            con.close();
         }
 
     },
@@ -120,8 +131,10 @@ public enum Option {
             System.out.println("выход");
         }
     },;
-    
+
+
+    private static DBConnection dbCon = new DBConnection("jdbc:h2:.\\Office");
     Scanner sc = new Scanner(System.in);
     abstract String getText();
-    abstract void action();
+    abstract void action() throws SQLException;
 }

@@ -4,6 +4,7 @@ target/
 !**/src/test/**/target/
 
 /Office.mv.db
+/target
 
 ### IntelliJ IDEA ###
 .idea/

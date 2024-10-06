@@ -1,10 +1,11 @@
 package office;
 
+import java.sql.SQLException;
 import java.util.Scanner;
 
 public class Office {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
         Option opt=Option.AddDepartment;
         Scanner sc = new Scanner(System.in);
         
